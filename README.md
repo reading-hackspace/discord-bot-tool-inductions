@@ -1,6 +1,5 @@
-# discord-bot-rlab
-A bot to support induction and tooling requests for rLab
-
+# Discord Bot Inductions
+A bot to support induction requests for rLab
 
 ## Developing locally
 
