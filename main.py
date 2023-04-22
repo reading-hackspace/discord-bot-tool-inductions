@@ -1,3 +1,4 @@
+import logging
 import os
 from enum import Enum
 
@@ -8,7 +9,7 @@ from modules.induction_storage import InductionStore
 from modules.tool import Tool
 
 # from discord.types.channel import ChannelType
-
+logging.getLogger().setLevel(logging.INFO)
 bot_token = os.getenv('BOT_TOKEN')
 guild_id = os.getenv('GUILD_ID')
 if guild_id:
@@ -40,7 +41,7 @@ async def request_induction(interaction: discord.Interaction, tool: Tool):
     thread: Thread = thread_message.channel
     induction_store.create_induction(thread.id, tool, interaction.user)
 
-    await interaction.response.send_message("")
+    await interaction.response.send_message(f"Please click into the thread below {username} and have a chat")
 
 
 @tree.command(name="claim", description="Offer to carry out an induction", guild=guild)
