@@ -22,7 +22,7 @@ client = discord.Client(intents=intents)
 tree = app_commands.CommandTree(client)
 
 induction_store = InductionStore()
-
+# test
 
 @tree.command(name="request_induction", description="Create a new request for an induction", guild=guild)
 async def request_induction(interaction: discord.Interaction, tool: Tool):
