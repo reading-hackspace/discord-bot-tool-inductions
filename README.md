@@ -15,3 +15,4 @@ interactions endpoint url` to `[ngrok forwarding url]/api/commands`
 ## Random spare links
 
 - https://discordpy.readthedocs.io/en/stable/discord.html
+- https://towardsdatascience.com/turn-google-sheets-into-your-own-database-with-python-4aa0b4360ce7
