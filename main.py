@@ -4,7 +4,8 @@ from datetime import datetime
 
 import discord
 from discord import app_commands, ChannelType, Thread, PrivacyLevel, EntityType
-from modules.induction_storage import InductionStore
+
+from modules.induction_gsheet_store import InductionGsheetStore
 from modules.tool import Tool
 
 # set up the discord client and app command tree
@@ -14,6 +15,7 @@ tree = app_commands.CommandTree(client)
 
 # Get the app token and guild ID from environment
 bot_token = os.getenv('BOT_TOKEN')
+induction_db = os.getenv('INDUCTION_DB')
 guild_id = os.getenv('GUILD_ID')
 if guild_id:
     guild = discord.Object(id=guild_id)
@@ -22,7 +24,7 @@ else:
 
 # TODO this needs to be replaced with a DB interaction instead of just being in-memory
 # Create persistence mechanism for inductions
-induction_store = InductionStore()
+induction_store = InductionGsheetStore()
 
 
 @tree.command(name="request_induction", description="Create a new request for an induction", guild=guild)
@@ -73,6 +75,23 @@ async def close(interaction):
 async def on_ready():
     await tree.sync(guild=discord.Object(id=guild_id))
     print("Ready!")
+
+
+def gsuite_test():
+    # TODO could do with a nice way of creating an initial DB and sharing it with the induction peeps
+    # Connect to Google Sheets
+    scope = ['https://www.googleapis.com/auth/spreadsheets',
+              "https://www.googleapis.com/auth/drive"]
+    #
+    # credentials = ServiceAccountCredentials.from_json_keyfile_name("gs_credentials.json", scope)
+    # client = gspread.authorize(credentials)
+    # sheet = client.create("InductionDatabase")
+    # sheet.share('dave.lush@gmail.com', perm_type='user', role='writer')
+    # sheet.sheet1.insert_row(["thread_id", "requestor_id", "requestor_display_name", "inductor_id", "inductor_diplay_name", "status", "tool", "request_datetime", "claim_datetime", "close_datetime"])
+    # sheet = client.open("InductionDatabase")
+    # logging.info("gsuite setup completed")
+    # df = pd.read_csv('football_news')
+    # sheet.update([df.columns.values.tolist()] + df.values.tolist())
 
 
 if __name__ == '__main__':

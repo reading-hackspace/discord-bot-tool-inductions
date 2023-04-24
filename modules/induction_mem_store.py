@@ -1,13 +1,10 @@
 import logging
-from typing import TypedDict, Dict
-
 from discord import User, Member
-
 from modules.induction import Induction
 from modules.tool import Tool
 
 
-class InductionStore:
+class InductionMemStore:
     store: dict[str, Induction] = {}
 
     def create(self, thread_id: int, tool: Tool, requestor: Member):
@@ -26,4 +23,3 @@ class InductionStore:
             return self.store.get(thread_id)
         else:
             return None
-
