@@ -1,8 +1,5 @@
+from datetime import datetime
 from enum import Enum
-
-from discord import Member
-from discord.user import User
-
 from modules.tool import Tool
 
 
@@ -14,18 +11,28 @@ class State(Enum):
 
 
 class Induction:
-    requestor: Member
-    claimer: Member
+    requestor_id: str
+    requestor_name: str
+    claimer_id: str
+    claimer_name: str
     state: State
     tool: Tool
+    request_datetime: datetime
+    claim_datetime: datetime
+    close_datetime: datetime
 
-    def __init__(self, tool:Tool, user:Member):
+    def __init__(self,  state: State, tool: Tool, requestor_id: str, requestor_name: str, claimer_id: str, claimer_name: str):
         self.tool = tool
-        self.requestor = user
-        state = State.NEW
+        self.state = state
+        self.requestor_id = requestor_id
+        self.requestor_name = requestor_name
+        self.claimer_id = claimer_id
+        self.claimer_name = claimer_name
 
-    def claim(self, user: Member):
-        self.claimer = User
-        self.state = State.CLAIMED
-
-
+    def __init__(self, row: list):
+        self.requestor_id = row[1]
+        self.requestor_name = row[2]
+        self.claimer_id = row[3]
+        self.claimer_name = row[4]
+        self.status = row[5]
+        self.tool = row[6]
