@@ -31,7 +31,7 @@ class InductionGsheetStore:
         sheet.insert_row(row_data, row_num)
         logging.info(f"CREATED by {requestor.display_name} for {tool} in {thread_id}")
 
-    def claim(self, thread_id: int, claimer: Member):
+    def claim(self, thread_id: int, claimer: Member) -> bool:
         thread_id_str = str(thread_id)
         sheet = self.db.sheet1
         thread_id_list = sheet.col_values(1)
@@ -47,8 +47,10 @@ class InductionGsheetStore:
                 cells[0][8] = datetime.datetime.now().isoformat()
             sheet.update(f"A{row_num}:J{row_num}", cells)
             logging.info(f"CLAIMED by {claimer.display_name} in {thread_id_str}")
+            return True
         else:
             logging.error(f"thread {thread_id} does not exist to be claimed by {claimer.display_name}")
+            return False
 
     def get(self, thread_id:int) -> Induction:
         thread_id_str = str(thread_id)

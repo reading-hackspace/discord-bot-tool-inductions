@@ -50,22 +50,24 @@ async def request_induction(interaction: discord.Interaction, tool: Tool):
 @tree.command(name="claim", description="Offer to carry out an induction", guild=guild)
 async def claim(interaction: discord.Interaction):
     thread: Thread = interaction.channel
-    induction_store.claim(thread.id, interaction.user)
-    induction = induction_store.get(thread.id)
-    await interaction.response.send_message(f"Induction claimed by {interaction.user.display_name}. You legend!")
+    claimer = interaction.user
+    if induction_store.claim(thread.id, claimer):
+        induction = induction_store.get(thread.id)
+        await interaction.response.send_message(f"Induction claimed by {claimer.display_name}. You legend!")
 
-    await interaction.guild.create_scheduled_event(name=f"{induction.tool} induction for {induction.requestor.display_name}",
-                                                   description=f"This is an automatically generated induction for the {induction.tool}",
-                                                   start_time=datetime.fromisoformat('2023-04-23T14:00:00').astimezone(),
-                                                   end_time=datetime.fromisoformat('2023-04-23T15:00:00').astimezone(),
-                                                   privacy_level=PrivacyLevel.guild_only,
-                                                   entity_type=EntityType.external,
-                                                   location="rLab – Unit C1, Weldale Street, Reading, RG1 7BX",
-                                                   reason="tool induction")
+        await interaction.guild.create_scheduled_event(name=f"{induction.tool} induction for {induction.requestor_name}",
+                                                       description=f"This is an automatically generated induction for the {induction.tool}",
+                                                       start_time=datetime.fromisoformat('2024-04-23T14:00:00').astimezone(),
+                                                       end_time=datetime.fromisoformat('2024-04-23T15:00:00').astimezone(),
+                                                       privacy_level=PrivacyLevel.guild_only,
+                                                       entity_type=EntityType.external,
+                                                       location="rLab – Unit C1, Weldale Street, Reading, RG1 7BX",
+                                                       reason="tool induction")
+    else:
+        await interaction.response.send_message(f"You need to be in an induction thread to `/claim` {claimer.mention}")
 
- #  image="https://rlab.org.uk/images/rlab_logo_coloured.png",
 
-
+# TODO needs to be implemented
 @tree.command(name="close", description="Close an induction request", guild=guild)
 async def close(interaction):
     await interaction.response.send_message("Induction closed")
@@ -74,7 +76,7 @@ async def close(interaction):
 @client.event
 async def on_ready():
     await tree.sync(guild=discord.Object(id=guild_id))
-    print("Ready!")
+    logging.warning("Ready!")
 
 
 def gsuite_test():
