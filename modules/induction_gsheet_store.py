@@ -26,7 +26,7 @@ class InductionGsheetStore:
         sheet = self.db.sheet1
         # db.share('dave.lush@gmail.com', perm_type='user', role='writer')
         row_num = next_available_row(sheet)
-        row_data = [str(thread_id), str(requestor.id), requestor.display_name, " ", " ", State.NEW.value, tool.value,
+        row_data = [str(thread_id), str(requestor.id), requestor.display_name, " ", " ", State.NEW.name, tool.name,
                     datetime.datetime.now().isoformat(), " ", " "]
         sheet.insert_row(row_data, row_num)
         logging.info(f"CREATED by {requestor.display_name} for {tool} in {thread_id}")
@@ -41,6 +41,7 @@ class InductionGsheetStore:
             cells = sheet.get(f"A{row_num}:J{row_num}")
             cells[0][3] = str(claimer.id)
             cells[0][4] = claimer.display_name
+            cells[0][5] = State.CLAIMED.name
             if len(cells[0]) <= 7:
                  list(cells[0]).append(datetime.datetime.now().isoformat())
             else:
