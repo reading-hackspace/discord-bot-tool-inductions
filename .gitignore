@@ -1,5 +1,6 @@
 .idea/
 gs_credentials.json
+tool_catalogue.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

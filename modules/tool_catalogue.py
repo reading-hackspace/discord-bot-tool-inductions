@@ -7,10 +7,11 @@ class Tool():
     longName: str
     induction_required: bool = True
 
-    def __init__(self, id, name, longName):
+    def __init__(self, id, name, longName, induction_required):
         self.id = id
         self.shortName = name
         self.longName = longName
+        self.induction_required = induction_required
 
 
 def get_tool_catalogue() -> List[Tool]:
@@ -63,4 +64,15 @@ def get_tool_catalogue() -> List[Tool]:
                          Tool("INSPECTION_MICROSCOPE", "Tool Inspection Microscope", "Tool Inspection Microscope", False),
                          Tool("GRINDER", "Grinder", "Axminster AP200SRG Grinder", False)
                          ]
-    return []
+    return tools
+
+
+def write_tool_catalogue():
+    tools = get_tool_catalogue()
+    with open("../tool_catalogue.csv", "w") as f:
+        f.write("id,shortName,longName,induction_required\n")
+        for tool in tools:
+            f.write(f"{tool.id},{tool.shortName},{tool.longName},{tool.induction_required}\n")
+
+
+write_tool_catalogue()
